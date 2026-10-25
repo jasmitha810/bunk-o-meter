@@ -5,27 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Escapacity | Attendance Buffer Calculator</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Load FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
   <div class="card">
-    <h1>Escapacity</h1>
-    <p>Check your safe bunks or required catch-up days.</p>
+    <h1>ESCAPACITY</h1>
+    <p class="tagline">Attendance & Bunk Buffer Tracker</p>
 
     <!-- Target Percentage Input -->
-    <label for="target">Required College Criteria (%):</label>
-    <input type="number" id="target" value="75" placeholder="e.g. 75 or 80">
+    <label for="target">College Criteria (%)</label>
+    <div class="input-group">
+      <div class="icon-box"><i class="fa-solid fa-percent"></i></div>
+      <input type="number" id="target" value="75" placeholder="e.g. 75">
+    </div>
 
-    <!-- Present & Absent Inputs -->
-    <label for="present">Days / Hours Present:</label>
-    <input type="number" id="present" placeholder="e.g. 42">
+    <!-- Present Inputs -->
+    <label for="present">Days Present</label>
+    <div class="input-group">
+      <div class="icon-box success-icon"><i class="fa-solid fa-square-check"></i></div>
+      <input type="number" id="present" placeholder="e.g. 42">
+    </div>
 
-    <label for="absent">Days / Hours Absent:</label>
-    <input type="number" id="absent" placeholder="e.g. 8">
+    <!-- Absent Inputs -->
+    <label for="absent">Days Absent</label>
+    <div class="input-group">
+      <div class="icon-box danger-icon"><i class="fa-solid fa-square-xmark"></i></div>
+      <input type="number" id="absent" placeholder="e.g. 8">
+    </div>
 
-    <button id="calc-btn">Calculate Escapacity</button>
+    <button id="calc-btn">CALCULATE ESCAPACITY</button>
 
-    <h3 id="result"></h3>
+    <div id="result-card" class="result-card hidden">
+      <div class="status-badge" id="status-badge">Attendance Status: 0.0%</div>
+      <p id="result" class="result-text"></p>
+    </div>
   </div>
 
   <script src="script.js"></script>
