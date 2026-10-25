@@ -1,61 +1,72 @@
-// 1. Find the button and result text on our HTML page
 const calcBtn = document.getElementById("calc-btn");
+const resultCard = document.getElementById("result-card");
+const statusBadge = document.getElementById("status-badge");
 const resultText = document.getElementById("result");
 
-// 2. Tell the button what to do when clicked
 calcBtn.addEventListener("click", function () {
-  // Grab the numbers typed by the user
-  let attended = Number(document.getElementById("attended").value);
-  let total = Number(document.getElementById("total").value);
+  const target = Number(document.getElementById("target").value);
+  const present = Number(document.getElementById("present").value);
+  const absent = Number(document.getElementById("absent").value);
 
-  // Safety check: Did they leave a box blank or enter invalid numbers?
-  if (total === 0 || isNaN(attended) || isNaN(total)) {
-    resultText.innerText = "Please enter valid numbers!";
+  // Validation
+  if (isNaN(target) || target <= 0 || target > 100) {
+    showError("⚠️ Please enter a valid target percentage between 1 and 100.");
+    return;
+  }
+  if (isNaN(present) || isNaN(absent) || present < 0 || absent < 0) {
+    showError("⚠️ Please enter valid positive numbers for Present and Absent.");
     return;
   }
 
-  // Safety check: Attended cannot be more than total
-  if (attended > total) {
-    resultText.innerText = "Attended classes cannot be greater than total classes!";
+  const total = present + absent;
+  if (total === 0) {
+    showError("⚠️ Total classes conducted cannot be zero.");
     return;
   }
 
-  // Calculate current percentage
-  let currentPercentage = (attended / total) * 100;
+  const currentPercentage = (present / total) * 100;
+  resultCard.classList.remove("hidden");
 
-  // We set our target here!
-  let target = 80;
-
-  // SCENARIO A: Already safe (80% or higher)
+  // Above or equal to target
   if (currentPercentage >= target) {
     let safeBunks = 0;
     let tempTotal = total;
 
-    // Test skipping 1 class, then 2, then 3...
-    while ((attended / (tempTotal + 1)) * 100 >= target) {
+    while ((present / (tempTotal + 1)) * 100 >= target) {
       safeBunks++;
       tempTotal++;
     }
 
+    statusBadge.className = "status-badge safe";
+    statusBadge.innerText = `Attendance Status: ${currentPercentage.toFixed(1)}%`;
+
     if (safeBunks === 0) {
-      resultText.innerText = `Current: ${currentPercentage.toFixed(1)}%. You are right on the border! You cannot miss any classes.`;
+      resultText.innerText = `Target criteria: ${target}%\n\nYou are right on the border! You can't afford to miss any upcoming classes.`;
     } else {
-      resultText.innerText = `Current: ${currentPercentage.toFixed(1)}%. You can safely bunk ${safeBunks} more classes!`;
+      resultText.innerText = `🎉 Safe Escapacity: You can safely miss ${safeBunks} more ${safeBunks === 1 ? 'class' : 'classes'} and remain above your ${target}% requirement!`;
     }
   } 
-  // SCENARIO B: Danger zone (below 80%)
+  // Below target
   else {
-    let classesToAttend = 0;
-    let tempAttended = attended;
+    let needed = 0;
+    let tempPresent = present;
     let tempTotal = total;
 
-    // Test attending consecutive classes until hitting 80%
-    while ((tempAttended / tempTotal) * 100 < target) {
-      classesToAttend++;
-      tempAttended++;
+    while ((tempPresent / tempTotal) * 100 < target) {
+      needed++;
+      tempPresent++;
       tempTotal++;
     }
 
-    resultText.innerText = `Current: ${currentPercentage.toFixed(1)}%. Danger! You need to attend the next ${classesToAttend} consecutive classes to reach 80%!`;
+    statusBadge.className = "status-badge danger";
+    statusBadge.innerText = `Attendance Status: ${currentPercentage.toFixed(1)}%`;
+    resultText.innerText = `🚨 Deficit Alert: You need to attend the next ${needed} consecutive ${needed === 1 ? 'class' : 'classes'} to restore your criteria to ${target}%!`;
   }
 });
+
+function showError(message) {
+  resultCard.classList.remove("hidden");
+  statusBadge.className = "status-badge danger";
+  statusBadge.innerText = "Validation Error";
+  resultText.innerText = message;
+}
