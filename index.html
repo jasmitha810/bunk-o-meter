@@ -1,22 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Attendance Checker</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escapacity | Attendance Buffer Calculator</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="card">
-    <h1>Bunk Checker</h1>
-    <p>Find out how many classes you can safely skip!</p>
+    <h1>Escapacity</h1>
+    <p>Check your safe bunks or required catch-up days.</p>
 
-    <label>Classes you attended:</label>
-    <input type="number" id="attended" placeholder="e.g. 45">
+    <!-- Target Percentage Input -->
+    <label for="target">Required College Criteria (%):</label>
+    <input type="number" id="target" value="75" placeholder="e.g. 75 or 80">
 
-    <label>Total classes conducted:</label>
-    <input type="number" id="total" placeholder="e.g. 50">
+    <!-- Present & Absent Inputs -->
+    <label for="present">Days / Hours Present:</label>
+    <input type="number" id="present" placeholder="e.g. 42">
 
-    <button id="calc-btn">Calculate</button>
+    <label for="absent">Days / Hours Absent:</label>
+    <input type="number" id="absent" placeholder="e.g. 8">
+
+    <button id="calc-btn">Calculate Escapacity</button>
 
     <h3 id="result"></h3>
   </div>
